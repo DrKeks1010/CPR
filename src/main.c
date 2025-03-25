@@ -14,6 +14,8 @@
 #define _WINDOW_HEIGHT 800
 #define _WINDOW_NAME "OpenGL"
 
+void processInput(GLFWwindow* window);
+
 int main(void) 
 {
 	// Init glfw
@@ -127,6 +129,8 @@ int main(void)
 	// Main window loop
 	while (!glfwWindowShouldClose(window))
 	{
+		processInput(window);
+		
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -158,3 +162,10 @@ int main(void)
 	printf("Project exited without any errors!\n");
 	return 0;
 }
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
