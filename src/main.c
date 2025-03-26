@@ -136,8 +136,8 @@ int main(void)
 
 	// Create uniform to control rendering of object
 	GLuint modelMatrixID = glGetUniformLocation(defaultShader->ID, "model");
-	GLuint VIEW_MATRIXID = glGetUniformLocation(defaultShader->ID, "view");
-	GLuint PROJECTION_MATRIXID = glGetUniformLocation(defaultShader->ID, "projection");
+	GLuint viewMatrixID = glGetUniformLocation(defaultShader->ID, "view");
+	GLuint projectionMatrixID = glGetUniformLocation(defaultShader->ID, "projection");
 	
 	float modelMatrix[16] = {
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -158,8 +158,8 @@ int main(void)
 		Shader_Activate(defaultShader);
 		// Set uniforms
 		glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, modelMatrix);
-		glUniformMatrix4fv(VIEW_MATRIXID, 1, GL_FALSE, VIEW_MATRIX);
-		glUniformMatrix4fv(PROJECTION_MATRIXID, 1, GL_FALSE, PROJECTION_MATRIX);
+		glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, VIEW_MATRIX);
+		glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, PROJECTION_MATRIX);
 		// bind the VAO so OpenGL knows to use it
 		VAO_Bind(VAO1);
 		// Draw the triangle using GL_TRIANGLE_STRIP primitive
