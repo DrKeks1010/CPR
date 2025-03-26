@@ -1,0 +1,13 @@
+#ifndef _TIMER_H
+#define _TIMER_H
+
+float TIMER_CURRENT = 0, TIMER_LAST = 0, TIMER_DELTA = 1;
+
+static void TIMER_UPDATE()
+{
+  TIMER_LAST = TIMER_CURRENT;
+  TIMER_CURRENT = glfwGetTime();
+  TIMER_DELTA = TIMER_CURRENT - TIMER_LAST;
+}
+
+#endif

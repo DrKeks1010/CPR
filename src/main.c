@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "linmath.h"
+#include "timer.h"
 #include "Shader.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -64,7 +65,7 @@ int main(void)
 	// Set the opengl viewport
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	// Enable face culling
-	glEnable(GL_CULL_FACE);
+	// glEnable(GL_CULL_FACE);
 	// Enable depth testing
 	glEnable(GL_DEPTH_TEST);
 
@@ -141,6 +142,7 @@ int main(void)
 	// Main window loop
 	while (!glfwWindowShouldClose(window))
 	{
+		TIMER_UPDATE();
 		processInput(window);
 		
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
@@ -190,5 +192,20 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		mat4x4_translate3f(VIEW_MATRIX, 0.f, 0.f, TIMER_DELTA);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		mat4x4_translate3f(VIEW_MATRIX, 0.f, 0.f, -TIMER_DELTA);
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		mat4x4_translate3f(VIEW_MATRIX, TIMER_DELTA, 0.f, 0.f);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		mat4x4_translate3f(VIEW_MATRIX, -TIMER_DELTA, 0.f, 0.f);
+	
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		mat4x4_translate3f(VIEW_MATRIX, 0.f, -TIMER_DELTA, 0.f);
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		mat4x4_translate3f(VIEW_MATRIX, 0.f, TIMER_DELTA, 0.f);
 }
 
