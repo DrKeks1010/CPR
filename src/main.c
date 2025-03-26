@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <math.h>
 
+#include "linmath.h"
 #include "Shader.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -13,16 +14,10 @@
 #define _WINDOW_NAME "OpenGL"
 
 float WINDOW_WIDTH = 800, WINDOW_HEIGHT = 800;
-float VIEW_MATRIX[16] = {
-	1.0f, 0.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f, -1.5f, 1.0f 
-}, PROJECTION_MATRIX[16];
+mat4x4 VIEW_MATRIX = mat4x4_identity(), PROJECTION_MATRIX = mat4x4_identity();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void generateProjectionMatrix(float matrix[16], float fov, float aspectRatio, float nearPlane, float farPlane);
 
 int main(void) 
 {
@@ -138,14 +133,10 @@ int main(void)
 	GLuint modelMatrixID = glGetUniformLocation(defaultShader->ID, "model");
 	GLuint viewMatrixID = glGetUniformLocation(defaultShader->ID, "view");
 	GLuint projectionMatrixID = glGetUniformLocation(defaultShader->ID, "projection");
-	
-	float modelMatrix[16] = {
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f 
-	};
-	generateProjectionMatrix(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
+
+	mat4x4 modelMatrix = mat4x4_identity();
+	mat4x4_translate3f(VIEW_MATRIX, 0.f, 0.f, -1.5f);
+	mat4x4_projection(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
 
 	// Main window loop
 	while (!glfwWindowShouldClose(window))
@@ -192,7 +183,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	WINDOW_HEIGHT = height;
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	generateProjectionMatrix(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
+	mat4x4_projection(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
 }
 
 void processInput(GLFWwindow* window)
@@ -201,15 +192,3 @@ void processInput(GLFWwindow* window)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-void generateProjectionMatrix(float matrix[16], float fov, float aspectRatio, float nearPlane, float farPlane)
-{
-	float right = tanf(M_PI / 360.0f * fov) * nearPlane;
-	float top = right / aspectRatio;
-
-	matrix[0] = nearPlane / right; 
-	matrix[5] = nearPlane / top;
-	matrix[10] = (farPlane + nearPlane) / (nearPlane - farPlane);
-	matrix[11] = -1;
-	matrix[14] = 2 * farPlane * nearPlane / (nearPlane - farPlane);
-	matrix[1] = matrix[2] = matrix[3] = matrix[4] = matrix[6] = matrix[7] = matrix[8] = matrix[9] = matrix[12] = matrix[13] = matrix[15] = 0;
-}
