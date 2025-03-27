@@ -44,7 +44,7 @@ int main(void)
 
 	GLuint indices[] =
 	{
-		0, 1, 2, 3, 6, 0, 4, 1, 5, 3, 7, 6, 5, 4
+		1, 0, 3, 2, 6, 0, 4, 1, 5, 3, 7, 6, 5, 4
 	};
 
 	// Create glfw window
@@ -65,7 +65,7 @@ int main(void)
 	// Set the opengl viewport
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	// Enable face culling
-	// glEnable(GL_CULL_FACE);
+	 glEnable(GL_CULL_FACE);
 	// Enable depth testing
 	glEnable(GL_DEPTH_TEST);
 
