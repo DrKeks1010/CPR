@@ -69,11 +69,10 @@ static inline void mat4x4_translateXYZvec3(mat4x4 m, vec3 v)
 
 static inline void mat4x4_projection(mat4x4 m, float fov, float aspectRatio, float nearPlane, float farPlane)
 {
-  float right = tanf(M_PI / 360.0f * fov) * nearPlane;
-  float top = right / aspectRatio;
+  float val = tanf(M_PI / 360.f * fov);
 
-  m[0] = nearPlane / right; 
-  m[5] = nearPlane / top;
+  m[0] = val;
+  m[5] = val * aspectRatio;
   m[10] = (farPlane + nearPlane) / (nearPlane - farPlane);
   m[11] = -1;
   m[14] = 2 * farPlane * nearPlane / (nearPlane - farPlane);
