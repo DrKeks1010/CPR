@@ -9,6 +9,7 @@ LIBS=-l:libglfw3.a -lgdi32
 CFLAGS=-Wall $(patsubst %,-I%,$(IDIR))
 
 OBJ = $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(wildcard $(SDIR)/*.c))
+INC = $(wildcard $(IDIR)/*.h)
 
 .PHONY: default clean
 default: $(TARGET)
@@ -16,10 +17,10 @@ default: $(TARGET)
 $(ODIR):
 	mkdir $@
 
-$(ODIR)/%.o: $(SDIR)/%.c | $(ODIR)
+$(ODIR)/%.o: $(SDIR)/%.c $(INC) | $(ODIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TARGET): $(OBJ) | $(ODIR)
+$(TARGET): $(OBJ) $(INC) | $(ODIR)
 	$(CC) $(OBJ) $(CFlAGS) $(patsubst %,-L%,$(LDIR)) $(LIBS) -o $@
 
 clean:
