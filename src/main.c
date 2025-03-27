@@ -136,7 +136,7 @@ int main(void)
 	GLuint projectionMatrixID = glGetUniformLocation(defaultShader->ID, "projection");
 
 	mat4x4 modelMatrix = mat4x4_identity();
-	mat4x4_translate3f(VIEW_MATRIX, 0.f, 0.f, -1.5f);
+	mat4x4_translateXYZf(VIEW_MATRIX, 0.f, 0.f, -1.5f);
 	mat4x4_projection(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
 
 	// Main window loop
@@ -194,18 +194,18 @@ void processInput(GLFWwindow* window)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		mat4x4_translate3f(VIEW_MATRIX, 0.f, 0.f, TIMER_DELTA);
+		mat4x4_translateZf(VIEW_MATRIX, TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		mat4x4_translate3f(VIEW_MATRIX, 0.f, 0.f, -TIMER_DELTA);
+		mat4x4_translateZf(VIEW_MATRIX, -TIMER_DELTA);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		mat4x4_translate3f(VIEW_MATRIX, TIMER_DELTA, 0.f, 0.f);
+		mat4x4_translateXf(VIEW_MATRIX, TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		mat4x4_translate3f(VIEW_MATRIX, -TIMER_DELTA, 0.f, 0.f);
+		mat4x4_translateXf(VIEW_MATRIX, -TIMER_DELTA);
 	
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		mat4x4_translate3f(VIEW_MATRIX, 0.f, -TIMER_DELTA, 0.f);
+		mat4x4_translateYf(VIEW_MATRIX, -TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		mat4x4_translate3f(VIEW_MATRIX, 0.f, TIMER_DELTA, 0.f);
+		mat4x4_translateYf(VIEW_MATRIX, TIMER_DELTA);
 }
 

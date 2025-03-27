@@ -14,7 +14,25 @@ typedef float mat4x4[16];
   0.f,0.f,0.f,1.f\
 }
 
-static inline void mat4x4_translate3f(mat4x4 m, float x, float y, float z)
+static inline void mat4x4_translateXf(mat4x4 m, float x)
+{
+  m[12] += m[0] * x;
+  m[13] += m[1] * x;
+  m[14] += m[2] * x;
+}
+static inline void mat4x4_translateYf(mat4x4 m, float y)
+{
+  m[12] += m[4] * y;
+  m[13] += m[5] * y;
+  m[14] += m[6] * y;
+}
+static inline void mat4x4_translateZf(mat4x4 m, float z)
+{
+  m[12] += m[8] * z;
+  m[13] += m[9] * z;
+  m[14] += m[10] * z;
+}
+static inline void mat4x4_translateXYZf(mat4x4 m, float x, float y, float z)
 {
   m[12] += m[0] * x + m[4] * y + m[8] * z;
   m[13] += m[1] * x + m[5] * y + m[9] * z;
