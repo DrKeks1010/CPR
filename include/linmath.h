@@ -5,6 +5,28 @@
 
 typedef float vec3[3];
 
+#define vec3_empty() {0.f,0.f,0.f}
+static inline void vec3_addXf(vec3 v, float x)
+{
+  v[0] += x;
+}
+static inline void vec3_addYf(vec3 v, float y)
+{
+  v[1] += y;
+}
+static inline void vec3_addZf(vec3 v, float z)
+{
+  v[2] += z;
+}
+static inline void vec3_add(vec3 a, const vec3 b)
+{
+  a[0] += b[0];
+  a[1] += b[1];
+  a[2] += b[2];
+}
+
+
+
 typedef float mat4x4[16];
 
 #define mat4x4_identity() {\
@@ -38,6 +60,13 @@ static inline void mat4x4_translateXYZf(mat4x4 m, float x, float y, float z)
   m[13] += m[1] * x + m[5] * y + m[9] * z;
   m[14] += m[2] * x + m[6] * y + m[10] * z;
 }
+static inline void mat4x4_translateXYZvec3(mat4x4 m, vec3 v)
+{
+  m[12] += m[0] * v[0] + m[4] * v[1] + m[8] * v[2];
+  m[13] += m[1] * v[0] + m[5] * v[1] + m[9] * v[2];
+  m[14] += m[2] * v[0] + m[6] * v[1] + m[10] * v[2];
+}
+
 static inline void mat4x4_projection(mat4x4 m, float fov, float aspectRatio, float nearPlane, float farPlane)
 {
   float right = tanf(M_PI / 360.0f * fov) * nearPlane;

@@ -191,21 +191,28 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
+		return;
+	}
+
+	vec3 movement = vec3_empty();
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		mat4x4_translateZf(VIEW_MATRIX, TIMER_DELTA);
+		vec3_addZf(movement, TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		mat4x4_translateZf(VIEW_MATRIX, -TIMER_DELTA);
+		vec3_addZf(movement, -TIMER_DELTA);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		mat4x4_translateXf(VIEW_MATRIX, TIMER_DELTA);
+		vec3_addXf(movement, TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		mat4x4_translateXf(VIEW_MATRIX, -TIMER_DELTA);
+		vec3_addXf(movement, -TIMER_DELTA);
 	
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		mat4x4_translateYf(VIEW_MATRIX, -TIMER_DELTA);
+		vec3_addYf(movement, -TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		mat4x4_translateYf(VIEW_MATRIX, TIMER_DELTA);
+		vec3_addYf(movement, TIMER_DELTA);
+
+	mat4x4_translateXYZvec3(VIEW_MATRIX, movement);
 }
 
