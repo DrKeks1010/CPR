@@ -13,11 +13,18 @@
 #include "EBO.h"
 
 #define _WINDOW_NAME "OpenGL"
+#define _INITIAL_WINDOW_WIDTH 800
+#define _INITIAL_WINDOW_HEIGHT 800
 
-float WINDOW_WIDTH = 800, WINDOW_HEIGHT = 800;
+float WINDOW_WIDTH = _INITIAL_WINDOW_WIDTH, WINDOW_HEIGHT = _INITIAL_WINDOW_HEIGHT;
 mat4x4 VIEW_MATRIX = mat4x4_identity(), PROJECTION_MATRIX = mat4x4_identity();
 
+vec2 MOUSE_POS = {_INITIAL_WINDOW_WIDTH / 2, _INITIAL_WINDOW_HEIGHT / 2};
+int MOUSE_FIRST_ENTER = 1;
+const float SENSITIVITY = 0.001f;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow* window);
 
 int main(void) 
@@ -48,7 +55,7 @@ int main(void)
 	};
 
 	// Create glfw window
-	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, _WINDOW_NAME, NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(_INITIAL_WINDOW_WIDTH, _INITIAL_WINDOW_HEIGHT, _WINDOW_NAME, NULL, NULL);
 	if (window == NULL)
 	{
 		perror(NULL);
@@ -58,6 +65,8 @@ int main(void)
 	}
 	// Get window context
 	glfwMakeContextCurrent(window);
+	// Capture mouse
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Load necessary opengl methods
 	gladLoadGL();
@@ -71,6 +80,8 @@ int main(void)
 
 	// Set resize callback function
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	// Set mouse callback function
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 	// Create shader
 	Shader* defaultShader = Shader_new("resources/shaders/default.vert", "resources/shaders/default.frag");
@@ -181,38 +192,67 @@ int main(void)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+	// Update the window width and height
 	WINDOW_WIDTH = width;
 	WINDOW_HEIGHT = height;
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	// Calculate updated projection matrix
 	mat4x4_projection(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (MOUSE_FIRST_ENTER) // On first mouse move: reset position
+	{
+		vec2_setXYf(MOUSE_POS, xpos, ypos);
+		MOUSE_FIRST_ENTER = 0;
+		return;
+	}	
+
+	// Calculate the relative mouse movement
+	vec2 offset = {xpos, ypos};
+	vec2_sub(offset, MOUSE_POS);
+	vec2_mulf(offset, SENSITIVITY);
+
+	// Update the mouse pos
+	vec2_setXYf(MOUSE_POS, xpos, ypos);
+
+	// Rotate around the global up(y) axis
+	mat4x4_rotateXf(VIEW_MATRIX, offset[0] * VIEW_MATRIX[4]);
+	mat4x4_rotateYf(VIEW_MATRIX, offset[0] * VIEW_MATRIX[5]);
+	mat4x4_rotateZf(VIEW_MATRIX, offset[0] * VIEW_MATRIX[6]);
+	// Rotate around the local right(x) axis
+	mat4x4_rotateXf(VIEW_MATRIX, offset[1]);
 }
 
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // Exit the application
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 		return;
 	}
 
+	// Accumulate all movement into a single vector
 	vec3 movement = vec3_empty();
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		vec3_addZf(movement, TIMER_DELTA);
+		vec3_mul_addXYZf(movement, TIMER_DELTA, -VIEW_MATRIX[8], 0, VIEW_MATRIX[10]);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		vec3_addZf(movement, -TIMER_DELTA);
+		vec3_mul_addXYZf(movement, -TIMER_DELTA, -VIEW_MATRIX[8], 0, VIEW_MATRIX[10]);
 
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		vec3_addXf(movement, TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		vec3_addXf(movement, -TIMER_DELTA);
+		vec3_mul_addXYZf(movement, TIMER_DELTA, -VIEW_MATRIX[0], 0, VIEW_MATRIX[2]);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		vec3_mul_addXYZf(movement, -TIMER_DELTA, -VIEW_MATRIX[0], 0, VIEW_MATRIX[2]);
 	
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		vec3_addYf(movement, -TIMER_DELTA);
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		vec3_addYf(movement, TIMER_DELTA);
 
+	// Move the camera by translating the view matrix
 	mat4x4_translateXYZvec3(VIEW_MATRIX, movement);
 }
 
