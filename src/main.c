@@ -238,14 +238,26 @@ void processInput(GLFWwindow* window)
 	vec3 movement = vec3_empty();
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		vec3_mul_addXYZf(movement, TIMER_DELTA, -VIEW_MATRIX[8], 0, VIEW_MATRIX[10]);
+	{
+		vec3_addXf(movement, -TIMER_DELTA * VIEW_MATRIX[8]);
+		vec3_addZf(movement, TIMER_DELTA * VIEW_MATRIX[10]);
+	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		vec3_mul_addXYZf(movement, -TIMER_DELTA, -VIEW_MATRIX[8], 0, VIEW_MATRIX[10]);
+	{
+		vec3_addXf(movement, TIMER_DELTA * VIEW_MATRIX[8]);
+		vec3_addZf(movement, -TIMER_DELTA * VIEW_MATRIX[10]);
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		vec3_mul_addXYZf(movement, TIMER_DELTA, -VIEW_MATRIX[0], 0, VIEW_MATRIX[2]);
+	{
+		vec3_addXf(movement, -TIMER_DELTA * VIEW_MATRIX[0]);
+		vec3_addZf(movement, TIMER_DELTA * VIEW_MATRIX[2]);
+	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		vec3_mul_addXYZf(movement, -TIMER_DELTA, -VIEW_MATRIX[0], 0, VIEW_MATRIX[2]);
+	{
+		vec3_addXf(movement, TIMER_DELTA * VIEW_MATRIX[0]);
+		vec3_addZf(movement, -TIMER_DELTA * VIEW_MATRIX[2]);
+	}
 	
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		vec3_addYf(movement, -TIMER_DELTA);

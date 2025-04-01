@@ -43,13 +43,6 @@ static inline void vec3_add(vec3 a, const vec3 b)
   a[2] += b[2];
 }
 
-static inline void vec3_mul_addXYZf(vec3 v, float s, float x, float y, float z)
-{
-  v[0] += x * s;
-  v[1] += y * s;
-  v[2] += z * s;
-}
-
 
 typedef float mat4x4[16];
 
