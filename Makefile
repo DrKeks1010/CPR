@@ -6,7 +6,7 @@ ODIR=./obj
 CC=gcc
 
 LIBS=-l:libglfw3.a -lgdi32
-CFLAGS=-Wall $(patsubst %,-I%,$(IDIR))
+CFLAGS=-Wall -ffast-math $(patsubst %,-I%,$(IDIR))
 
 OBJ = $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(wildcard $(SDIR)/*.c))
 INC = $(wildcard $(IDIR)/*.h)
