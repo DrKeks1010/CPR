@@ -88,6 +88,37 @@ static inline void mat4x4_rotateZf_left(mat4x4 m, float a)
   m[13] = c * m[13] + s * tmp;
 }
 
+static inline void mat4x4_rotateXYZf_left(mat4x4 m, float x, float y, float z)
+{
+  float cx = cos(x), sx = sin(x);
+  float cy = cos(y), sy = sin(y);
+  float cz = cos(z), sz = sin(z);
+
+  float a = cz * cy, b = sz * cy, c = -sy;
+  float e = cz * sy * sx - sz * cx, f = sz * sy * sx + cz * cx, g = cy * sx;
+  float i = cz * sy * cx + sz * sx, j = sz * sy * cx - cz * sx, k = cy * cx;
+
+  float t1 = m[0], t2 = m[1];
+  m[0] = a * t1 + e * t2 + i * m[2];
+  m[1] = b * t1 + f * t2 + j * m[2];
+  m[2] = c * t1 + g * t2 + k * m[2];
+
+  t1 = m[4], t2 = m[5];
+  m[4] = a * t1 + e * t2 + i * m[6];
+  m[5] = b * t1 + f * t2 + j * m[6];
+  m[6] = c * t1 + g * t2 + k * m[6];
+
+  t1 = m[8], t2 = m[9];
+  m[8] = a * t1 + e * t2 + i * m[10];
+  m[9] = b * t1 + f * t2 + j * m[10];
+  m[10] = c * t1 + g * t2 + k * m[10];
+
+  t1 = m[12], t2 = m[13];
+  m[12] = a * t1 + e * t2 + i * m[14];
+  m[13] = b * t1 + f * t2 + j * m[14];
+  m[14] = c * t1 + g * t2 + k * m[14];
+}
+
 static inline void mat4x4_projection(mat4x4 m, float fov, float aspectRatio, float nearPlane, float farPlane)
 {
   float val = tanf(M_PI / 360.f * fov);

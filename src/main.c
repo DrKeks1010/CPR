@@ -220,13 +220,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
   vec2_setXYf(MOUSE_POS, xpos, ypos);
 
   // Rotate around the global up(y) axis
-  mat4x4_rotateXf_left(VIEW_MATRIX, offset[0] * VIEW_MATRIX[4]);
-  mat4x4_rotateYf_left(VIEW_MATRIX, offset[0] * VIEW_MATRIX[5]);
-  mat4x4_rotateZf_left(VIEW_MATRIX, offset[0] * VIEW_MATRIX[6]);
+  mat4x4_rotateXYZf_left(VIEW_MATRIX, 
+    offset[0] * VIEW_MATRIX[4], offset[0] * VIEW_MATRIX[5], offset[0] * VIEW_MATRIX[6]
+  );
+  mat4x4_rotateXYZf_left(MOVEMENT_MATRIX,
+    offset[0] * MOVEMENT_MATRIX[4], offset[0] * MOVEMENT_MATRIX[5], offset[0] * MOVEMENT_MATRIX[6]
+  );
 
-  mat4x4_rotateXf_left(MOVEMENT_MATRIX, offset[0] * MOVEMENT_MATRIX[4]);
-  mat4x4_rotateYf_left(MOVEMENT_MATRIX, offset[0] * MOVEMENT_MATRIX[5]);
-  mat4x4_rotateZf_left(MOVEMENT_MATRIX, offset[0] * MOVEMENT_MATRIX[6]);
   // Rotate around the local right(x) axis
   mat4x4_rotateXf_left(VIEW_MATRIX, offset[1]);
 }
