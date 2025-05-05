@@ -26,7 +26,7 @@ static inline void mat4x4_translateXYZvec3_right(mat4x4 m, vec3 v)
   m[14] += m[2] * v[0] + m[6] * v[1] + m[10] * v[2];
 }
 
-static inline void mat4x4_rotateXf(mat4x4 m, float a)
+static inline void mat4x4_rotateXf_left(mat4x4 m, float a)
 {
   float c = cos(a);
   float s = sin(a);
@@ -47,7 +47,7 @@ static inline void mat4x4_rotateXf(mat4x4 m, float a)
   m[13] = c * tmp - s * m[14];
   m[14] = c * m[14] + s * tmp;  
 }
-static inline void mat4x4_rotateYf(mat4x4 m, float a)
+static inline void mat4x4_rotateYf_left(mat4x4 m, float a)
 {
   float c = cos(a);
   float s = sin(a);
@@ -68,7 +68,7 @@ static inline void mat4x4_rotateYf(mat4x4 m, float a)
   m[12] = c * tmp + s * m[14];
   m[14] = c * m[14] - s * tmp;
 }
-static inline void mat4x4_rotateZf(mat4x4 m, float a)
+static inline void mat4x4_rotateZf_left(mat4x4 m, float a)
 {
   float c = cos(a);
   float s = sin(a);
