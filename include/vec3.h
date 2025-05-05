@@ -37,10 +37,7 @@ static inline void vec3_normalize(vec3 v)
   float len_sq = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
   if (len_sq < 0.001f) return;
 
-  len_sq = 1 / len_sq;
-  v[0] *= len_sq;
-  v[1] *= len_sq;
-  v[2] *= len_sq;
+  vec3_mulf(v, 1 / len_sq);
 }
 
 #endif

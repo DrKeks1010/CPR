@@ -21,9 +21,7 @@ static inline void mat4x4_translateXYZf_right(mat4x4 m, float x, float y, float 
 }
 static inline void mat4x4_translateXYZvec3_right(mat4x4 m, vec3 v)
 {
-  m[12] += m[0] * v[0] + m[4] * v[1] + m[8] * v[2];
-  m[13] += m[1] * v[0] + m[5] * v[1] + m[9] * v[2];
-  m[14] += m[2] * v[0] + m[6] * v[1] + m[10] * v[2];
+  mat4x4_translateXYZf_right(m, v[0], v[1], v[2]);
 }
 
 static inline void mat4x4_rotateXf_left(mat4x4 m, float a)
