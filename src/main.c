@@ -108,14 +108,14 @@ int main(void)
 		glfwTerminate();
 		exit(-1);
 	}
-	VAO_Bind(VAO1);
+	VAO_bind(VAO1);
 
 	// Create VBO
 	VBO* VBO1 = VBO_new(vertices, sizeof(vertices));
 	if (VBO1 == NULL)
 	{
 		fputs("Failed to create Vertex Buffer Object!\n", stderr);
-		VAO_Unbind(VAO1);
+		VAO_unbind(VAO1);
 		VAO_free(VAO1);
 		Shader_free(defaultShader);
 		glfwDestroyWindow(window);
@@ -128,9 +128,9 @@ int main(void)
 	if (EBO1 == NULL)
 	{
 		fputs("Failed to create Element Buffer Object!\n", stderr);
-		VBO_Unbind(VBO1);
+		VBO_unbind(VBO1);
 		VBO_free(VBO1);
-		VAO_Unbind(VAO1);
+		VAO_unbind(VAO1);
 		VAO_free(VAO1);
 		Shader_free(defaultShader);
 		glfwDestroyWindow(window);
@@ -139,12 +139,12 @@ int main(void)
 	}
 
 	// Link VAO to VBO
-	VAO_LinkAttrib(VAO1, VBO1, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(0));
-	VAO_LinkAttrib(VAO1, VBO1, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	VAO_linkAttrib(VAO1, VBO1, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(0));
+	VAO_linkAttrib(VAO1, VBO1, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	// Unbind objects
-	VAO_Unbind(VAO1);
-	VBO_Unbind(VBO1);
-	EBO_Unbind(EBO1);
+	VAO_unbind(VAO1);
+	VBO_unbind(VBO1);
+	EBO_unbind(EBO1);
 
 	// Create uniform to control rendering of object
 	GLuint modelMatrixID = glGetUniformLocation(defaultShader->ID, "model");
@@ -171,7 +171,7 @@ int main(void)
 		glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, VIEW_MATRIX);
 		glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, PROJECTION_MATRIX);
 		// bind the VAO so OpenGL knows to use it
-		VAO_Bind(VAO1);
+		VAO_bind(VAO1);
 		// Draw the triangle using GL_TRIANGLE_STRIP primitive
 		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);

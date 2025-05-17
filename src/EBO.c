@@ -27,11 +27,11 @@ inline void EBO_free(EBO* ebo)
 	free(ebo);
 }
 
-inline void EBO_Bind(EBO* ebo)
+inline void EBO_bind(EBO* ebo)
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->ID);
 }
-inline void EBO_Unbind(EBO* ebo)
+inline void EBO_unbind(EBO* ebo)
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

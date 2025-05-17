@@ -27,11 +27,11 @@ inline void VBO_free(VBO* vbo)
 	free(vbo);
 }
 
-inline void VBO_Bind(VBO* vbo)
+inline void VBO_bind(VBO* vbo)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo->ID);
 }
-inline void VBO_Unbind(VBO* vbo)
+inline void VBO_unbind(VBO* vbo)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

@@ -24,22 +24,22 @@ inline void VAO_free(VAO* vao)
 	free(vao);
 }
 
-inline void VAO_LinkAttrib(VAO* vao, VBO* vbo, GLuint layout, GLuint numComponents, GLenum type, GLsizei stride, void* offset)
+inline void VAO_linkAttrib(VAO* vao, VBO* vbo, GLuint layout, GLuint numComponents, GLenum type, GLsizei stride, void* offset)
 {
-	VBO_Bind(vbo);
+	VBO_bind(vbo);
 
 	// Configure the Vertex Attribute so that OpenGL knows how to read the VBO
 	glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
 	// Enable the Vertex Attribut so that OPENGL knows to use it
 	glEnableVertexAttribArray(layout);
 
-	VBO_Unbind(vbo);
+	VBO_unbind(vbo);
 }
-inline void VAO_Bind(VAO* vao)
+inline void VAO_bind(VAO* vao)
 {
 	glBindVertexArray(vao->ID);
 }
-inline void VAO_Unbind(VAO* vao)
+inline void VAO_unbind(VAO* vao)
 {
 	glBindVertexArray(0);
 }

@@ -11,7 +11,7 @@ typedef struct s_EBO
 EBO* EBO_new(GLuint* indices, GLsizeiptr size);
 void EBO_free(EBO* ebo);
 
-void EBO_Bind(EBO* ebo);
-void EBO_Unbind(EBO* ebo);
+void EBO_bind(EBO* ebo);
+void EBO_unbind(EBO* ebo);
 
 #endif

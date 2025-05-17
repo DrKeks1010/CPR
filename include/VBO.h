@@ -11,7 +11,7 @@ typedef struct s_VBO
 VBO* VBO_new(GLfloat* vertices, GLsizei size);
 void VBO_free(VBO* vbo);
 
-void VBO_Bind(VBO* vbo);
-void VBO_Unbind(VBO* vbo);
+void VBO_bind(VBO* vbo);
+void VBO_unbind(VBO* vbo);
 
 #endif
