@@ -15,6 +15,7 @@ VAO* VAO_new()
 
 	//Generate the VAO with 1 object
 	glGenVertexArrays(1, &vao->ID);
+	VAO_bind(vao);
 
 	return vao;
 }

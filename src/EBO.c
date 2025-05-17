@@ -16,7 +16,7 @@ EBO* EBO_new(GLuint* indices, GLsizeiptr size)
 	//Generate the EBO with 1 object
 	glGenBuffers(1, &ebo->ID);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo->ID);
+	EBO_bind(ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 
 	return ebo;

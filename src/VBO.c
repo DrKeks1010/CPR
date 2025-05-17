@@ -16,7 +16,7 @@ VBO* VBO_new(GLfloat* vertices, GLsizei size)
 	//Generate the VBO with 1 object
 	glGenBuffers(1, &vbo->ID);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo->ID);
+	VBO_bind(vbo);
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
 	return vbo;

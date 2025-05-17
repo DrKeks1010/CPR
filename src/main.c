@@ -3,14 +3,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <memory.h>
 #include <math.h>
 
 #include "linmath.h"
 #include "timer.h"
 #include "Shader.h"
-#include "VAO.h"
-#include "VBO.h"
-#include "EBO.h"
+#include "Chunk.h"
 
 #define _WINDOW_NAME "OpenGL"
 #define _INITIAL_WINDOW_WIDTH 800
@@ -37,7 +36,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Vertices coordinates
-	GLfloat vertices[] =
+	GLfloat s_vertices[] =
 	{
 		-1.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
@@ -46,8 +45,9 @@ int main(void)
 		0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 1.0f,
 	};
-
-	GLuint indices[] =
+	GLfloat* vertices = malloc(sizeof(s_vertices));
+	memcpy(vertices, s_vertices, sizeof(s_vertices));
+	GLuint s_indices[] =
 	{
 		2, 1, 0,
 		3, 1, 2,
@@ -58,6 +58,8 @@ int main(void)
 		3, 4, 5,
 		5, 4, 0,
 	};
+	GLuint* indices = malloc(sizeof(s_indices));
+	memcpy(indices, s_indices, sizeof(s_indices));
 
 	// Create glfw window
 	GLFWwindow* window = glfwCreateWindow(_INITIAL_WINDOW_WIDTH, _INITIAL_WINDOW_HEIGHT, _WINDOW_NAME, NULL, NULL);
@@ -98,52 +100,16 @@ int main(void)
 		exit(-1);
 	}
 
-	// Create VAO
-	VAO* VAO1 = VAO_new();
-	if (VAO1 == NULL)
+	vec3 position = vec3_empty(), normal = vec3_empty();
+	Chunk* chunk = Chunk_new(vertices, sizeof(s_vertices), indices, sizeof(s_indices), 24, position, normal);
+	if (chunk == NULL)
 	{
-		fputs("Failed to create Vertex Array Object!\n", stderr);
+		fputs("Failed to create Chunk Object!\n", stderr);
 		Shader_free(defaultShader);
 		glfwDestroyWindow(window);
 		glfwTerminate();
 		exit(-1);
 	}
-	VAO_bind(VAO1);
-
-	// Create VBO
-	VBO* VBO1 = VBO_new(vertices, sizeof(vertices));
-	if (VBO1 == NULL)
-	{
-		fputs("Failed to create Vertex Buffer Object!\n", stderr);
-		VAO_unbind(VAO1);
-		VAO_free(VAO1);
-		Shader_free(defaultShader);
-		glfwDestroyWindow(window);
-		glfwTerminate();
-		exit(-1);
-	}
-
-	// Create EBO
-	EBO* EBO1 = EBO_new(indices, sizeof(indices));
-	if (EBO1 == NULL)
-	{
-		fputs("Failed to create Element Buffer Object!\n", stderr);
-		VBO_unbind(VBO1);
-		VBO_free(VBO1);
-		VAO_unbind(VAO1);
-		VAO_free(VAO1);
-		Shader_free(defaultShader);
-		glfwDestroyWindow(window);
-		glfwTerminate();
-		exit(-1);
-	}
-
-	// Link VAO to VBO
-	VAO_linkAttrib(VAO1, VBO1, 0, 3, GL_FLOAT, 3 * sizeof(GLfloat), (void*)(0));
-	// Unbind objects
-	VAO_unbind(VAO1);
-	VBO_unbind(VBO1);
-	EBO_unbind(EBO1);
 
 	// Create uniform to control rendering of object
 	GLuint modelMatrixID = glGetUniformLocation(defaultShader->ID, "model");
@@ -169,25 +135,17 @@ int main(void)
 		glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, modelMatrix);
 		glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, VIEW_MATRIX);
 		glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, PROJECTION_MATRIX);
-		// bind the VAO so OpenGL knows to use it
-		VAO_bind(VAO1);
-		// Draw the triangle using GL_TRIANGLE_STRIP primitive
-		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+
+		Chunk_draw(chunk);
+
 		glfwSwapBuffers(window);
 
 		// Poll GLFW events
 		glfwPollEvents();
 	}
 
-	// Delete all the objects we've created
-	VAO_free(VAO1);
-	VBO_free(VBO1);
-	EBO_free(EBO1);
-
-	// Delete Shader
+	Chunk_free(chunk);
 	Shader_free(defaultShader);
-
-	// Close resources
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
