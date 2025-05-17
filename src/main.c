@@ -39,12 +39,12 @@ int main(void)
 	// Vertices coordinates
 	GLfloat vertices[] =
 	{
-		-1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
-		0.0f, -1.0f, 0.0f, 0.5f, 0.0f, 0.5f,
-		0.0f, 0.0f, -1.0f, 0.5f, 0.5f, 0.0f,
-		1.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.5f,
-		0.0f, 1.0f, 0.0f, 0.5f, 1.0f, 0.5f,
-		0.0f, 0.0f, 1.0f, 0.5f, 0.5f, 1.0f,
+		-1.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.0f, -1.0f,
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
 	};
 
 	GLuint indices[] =
@@ -139,8 +139,7 @@ int main(void)
 	}
 
 	// Link VAO to VBO
-	VAO_linkAttrib(VAO1, VBO1, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(0));
-	VAO_linkAttrib(VAO1, VBO1, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	VAO_linkAttrib(VAO1, VBO1, 0, 3, GL_FLOAT, 3 * sizeof(GLfloat), (void*)(0));
 	// Unbind objects
 	VAO_unbind(VAO1);
 	VBO_unbind(VBO1);
