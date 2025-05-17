@@ -39,19 +39,24 @@ int main(void)
   // Vertices coordinates
   GLfloat vertices[] =
   {
-    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f,
+    -1.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.5f,
+    0.0f, -1.0f, 0.0f, 0.5f, 0.0f, 0.5f,
+    0.0f, 0.0f, -1.0f, 0.5f, 0.5f, 0.0f,
+    1.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.5f,
+    0.0f, 1.0f, 0.0f, 0.5f, 1.0f, 0.5f,
+    0.0f, 0.0f, 1.0f, 0.5f, 0.5f, 1.0f,
   };
 
   GLuint indices[] =
   {
-    1, 0, 3, 2, 6, 0, 4, 1, 5, 3, 7, 6, 5, 4
+    2, 1, 0,
+    3, 1, 2,
+    5, 1, 3,
+    0, 1, 5,
+    0, 4, 2,
+    2, 4, 3,
+    3, 4, 5,
+    5, 4, 0,
   };
 
   // Create glfw window
@@ -168,7 +173,7 @@ int main(void)
     // bind the VAO so OpenGL knows to use it
     VAO_Bind(VAO1);
     // Draw the triangle using GL_TRIANGLE_STRIP primitive
-    glDrawElements(GL_TRIANGLE_STRIP, 14, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
     glfwSwapBuffers(window);
 
     // Poll GLFW events
