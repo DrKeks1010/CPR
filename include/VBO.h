@@ -9,9 +9,9 @@ typedef struct s_VBO
 } VBO;
 
 VBO* VBO_new(GLfloat* vertices, GLsizei size);
-extern void VBO_free(VBO* vbo);
+void VBO_free(VBO* vbo);
 
-extern void VBO_Bind(VBO* vbo);
-extern void VBO_Unbind(VBO* vbo);
+void VBO_Bind(VBO* vbo);
+void VBO_Unbind(VBO* vbo);
 
 #endif
