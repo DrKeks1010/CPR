@@ -23,8 +23,8 @@ vec2 MOUSE_POS = {_INITIAL_WINDOW_WIDTH / 2, _INITIAL_WINDOW_HEIGHT / 2};
 int MOUSE_FIRST_ENTER = 1;
 const float SENSITIVITY = 0.001f;
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+void mouseCallback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow* window);
 
 int main(void) 
@@ -79,9 +79,9 @@ int main(void)
   glEnable(GL_DEPTH_TEST);
 
   // Set resize callback function
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+  glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
   // Set mouse callback function
-  glfwSetCursorPosCallback(window, mouse_callback);
+  glfwSetCursorPosCallback(window, mouseCallback);
 
   // Create shader
   Shader* defaultShader = Shader_new("resources/shaders/default.vert", "resources/shaders/default.frag");
@@ -191,7 +191,7 @@ int main(void)
   return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
   // Update the window width and height
   WINDOW_WIDTH = width;
@@ -202,7 +202,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
   mat4x4_projection(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
   if (MOUSE_FIRST_ENTER) // On first mouse move: reset position
   {
