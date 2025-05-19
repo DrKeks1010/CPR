@@ -2,18 +2,20 @@
 #define _MAT4X4_H
 
 #include <math.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "vec3.h"
 
-typedef float mat4x4[16];
+typedef GLfloat mat4x4[16];
 
 #define mat4x4_identity() {\
-	1.f,0.f,0.f,0.f,\
-	0.f,1.f,0.f,0.f,\
-	0.f,0.f,1.f,0.f,\
-	0.f,0.f,0.f,1.f\
+	(GLfloat)1.f,(GLfloat)0.f,(GLfloat)0.f,(GLfloat)0.f,\
+	(GLfloat)0.f,(GLfloat)1.f,(GLfloat)0.f,(GLfloat)0.f,\
+	(GLfloat)0.f,(GLfloat)0.f,(GLfloat)1.f,(GLfloat)0.f,\
+	(GLfloat)0.f,(GLfloat)0.f,(GLfloat)0.f,(GLfloat)1.f\
 }
 
-static inline void mat4x4_translateXYZf_right(mat4x4 m, float x, float y, float z)
+static inline void mat4x4_translateXYZf_right(mat4x4 m, GLfloat x, GLfloat y, GLfloat z)
 {
 	m[12] += m[0] * x + m[4] * y + m[8] * z;
 	m[13] += m[1] * x + m[5] * y + m[9] * z;
@@ -29,7 +31,7 @@ static inline void mat4x4_rotateXf_left(mat4x4 m, float a)
 	float c = cos(a);
 	float s = sin(a);
 
-	float tmp = m[1];
+	GLfloat tmp = m[1];
 	m[1] = c * tmp - s * m[2];
 	m[2] = c * m[2] + s * tmp;
 
@@ -50,7 +52,7 @@ static inline void mat4x4_rotateYf_left(mat4x4 m, float a)
 	float c = cos(a);
 	float s = sin(a);
 
-	float tmp = m[0];
+	GLfloat tmp = m[0];
 	m[0] = c * tmp + s * m[2];
 	m[2] = c * m[2] - s * tmp;
 
@@ -71,7 +73,7 @@ static inline void mat4x4_rotateZf_left(mat4x4 m, float a)
 	float c = cos(a);
 	float s = sin(a);
 
-	float tmp = m[0];
+	GLfloat tmp = m[0];
 	m[0] = c * tmp - s * m[1];
 	m[1] = c * m[1] + s * tmp;
 
@@ -94,11 +96,11 @@ static inline void mat4x4_rotateXYZf_left(mat4x4 m, float x, float y, float z)
 	float cy = cos(y), sy = sin(y);
 	float cz = cos(z), sz = sin(z);
 
-	float a = cz * cy, b = sz * cy, c = -sy;
-	float e = cz * sy * sx - sz * cx, f = sz * sy * sx + cz * cx, g = cy * sx;
-	float i = cz * sy * cx + sz * sx, j = sz * sy * cx - cz * sx, k = cy * cx;
+	GLfloat a = cz * cy, b = sz * cy, c = -sy;
+	GLfloat e = cz * sy * sx - sz * cx, f = sz * sy * sx + cz * cx, g = cy * sx;
+	GLfloat i = cz * sy * cx + sz * sx, j = sz * sy * cx - cz * sx, k = cy * cx;
 
-	float t1 = m[0], t2 = m[1];
+	GLfloat t1 = m[0], t2 = m[1];
 	m[0] = a * t1 + e * t2 + i * m[2];
 	m[1] = b * t1 + f * t2 + j * m[2];
 	m[2] = c * t1 + g * t2 + k * m[2];

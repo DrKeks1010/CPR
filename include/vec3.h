@@ -2,19 +2,21 @@
 #define _VEC3_H
 
 #include <math.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
-typedef float vec3[3];
+typedef GLfloat vec3[3];
 
-#define vec3_empty() {0.f,0.f,0.f}
-static inline void vec3_addXf(vec3 v, float x)
+#define vec3_empty() {(GLfloat)0.f,(GLfloat)0.f,(GLfloat)0.f}
+static inline void vec3_addXf(vec3 v, GLfloat x)
 {
 	v[0] += x;
 }
-static inline void vec3_addYf(vec3 v, float y)
+static inline void vec3_addYf(vec3 v, GLfloat y)
 {
 	v[1] += y;
 }
-static inline void vec3_addZf(vec3 v, float z)
+static inline void vec3_addZf(vec3 v, GLfloat z)
 {
 	v[2] += z;
 }
@@ -25,7 +27,7 @@ static inline void vec3_add(vec3 a, const vec3 b)
 	a[2] += b[2];
 }
 
-static inline void vec3_mulf(vec3 v, float f)
+static inline void vec3_mulf(vec3 v, GLfloat f)
 {
 	v[0] *= f;
 	v[1] *= f;
