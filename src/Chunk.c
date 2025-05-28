@@ -4,7 +4,7 @@
 #include <memory.h>
 #include "Chunk.h"
 
-Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei triangleCount)
+Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei indicesCount)
 {
 	Chunk* chunk = calloc(1, sizeof(Chunk));
 	if (chunk == NULL)
@@ -13,7 +13,7 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 		fprintf(stderr, "Couldn't allocate %llu bytes to create Chunk!\n", sizeof(Chunk));
 	}
 
-	chunk->triangleCount = triangleCount;
+	chunk->indicesCount = indicesCount;
 	
 	if ((chunk->vao = VAO_new()) == NULL)
 	{
@@ -58,7 +58,7 @@ inline void Chunk_free(Chunk* chunk)
 inline void Chunk_draw(Chunk* chunk)
 {
 	VAO_bind(chunk->vao);
-	glDrawElements(GL_TRIANGLES, chunk->triangleCount, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, chunk->indicesCount, GL_UNSIGNED_INT, 0);
 }
 
 Chunk* Chunk_generate()
@@ -66,28 +66,19 @@ Chunk* Chunk_generate()
 		// Vertices coordinates
 	GLfloat s_vertices[] =
 	{
-		-1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
 	};
 	GLfloat* vertices = malloc(sizeof(s_vertices));
 	memcpy(vertices, s_vertices, sizeof(s_vertices));
 	GLuint s_indices[] =
 	{
-		2, 1, 0,
-		3, 1, 2,
-		5, 1, 3,
-		0, 1, 5,
-		0, 4, 2,
-		2, 4, 3,
-		3, 4, 5,
-		5, 4, 0,
+		0, 2, 1, 3
 	};
 	GLuint* indices = malloc(sizeof(s_indices));
 	memcpy(indices, s_indices, sizeof(s_indices));
 
-	return Chunk_new(vertices, sizeof(s_vertices), indices, sizeof(s_indices), 24);
+	return Chunk_new(vertices, sizeof(s_vertices), indices, sizeof(s_indices), 4);
 }

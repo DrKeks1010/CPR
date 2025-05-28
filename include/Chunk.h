@@ -8,14 +8,14 @@
 #include "EBO.h"
 
 typedef struct s_Chunk {
-	GLsizei triangleCount;
+	GLsizei indicesCount;
 
 	VAO* vao;
 	VBO* vbo;
 	EBO* ebo;
 } Chunk;
 
-Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei triangleCount);
+Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei indicesCount);
 void Chunk_free(Chunk* chunk);
 
 void Chunk_draw(Chunk* chunk);
