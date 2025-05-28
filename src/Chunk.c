@@ -41,7 +41,8 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 		return NULL;
 	}
 
-	VAO_linkAttrib(chunk->vao, chunk->vbo, 0, 3, GL_FLOAT, 3 * sizeof(GLfloat), (void*)(0));
+	VAO_linkAttrib(chunk->vao, chunk->vbo, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(0));
+	VAO_linkAttrib(chunk->vao, chunk->vbo, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	VAO_unbind(chunk->vao);
 	VBO_unbind(chunk->vbo);
 	EBO_unbind(chunk->ebo);
@@ -64,7 +65,7 @@ inline void Chunk_draw(Chunk* chunk)
 }
 
 #define CHUNK_RESOLUTION 8
-#define CHUNK_VERTICES_SIZE (sizeof(GLfloat) * (CHUNK_RESOLUTION + 1) * (CHUNK_RESOLUTION + 1) * 3)
+#define CHUNK_VERTICES_SIZE (sizeof(GLfloat) * (CHUNK_RESOLUTION + 1) * (CHUNK_RESOLUTION + 1) * 6)
 #define CHUNK_INDICES_COUNT ((CHUNK_RESOLUTION + 1) * CHUNK_RESOLUTION * 2 + CHUNK_RESOLUTION - 1)
 #define CHUNK_INDICES_SIZE (sizeof(GLuint) * CHUNK_INDICES_COUNT)
 
@@ -91,6 +92,7 @@ Chunk* Chunk_generate(vec2 from, vec2 to)
 	vec2_sub(to, from);
 	vec2_mulf(to, 1.0f / CHUNK_RESOLUTION);
 
+	// Height calculation
 	for (z = 0; z <= CHUNK_RESOLUTION; z++)
 	{
 		z_pos = from[1] + z * to[1];
@@ -99,9 +101,9 @@ Chunk* Chunk_generate(vec2 from, vec2 to)
 		{
 			x_pos = from[0] + x * to[0];
 
-			vertices[(x + z_index) * 3 + 0] = x_pos;
-			vertices[(x + z_index) * 3 + 1] = Perlin_get(x_pos, z_pos);
-			vertices[(x + z_index) * 3 + 2] = z_pos;
+			vertices[(x + z_index) * 6 + 0] = x_pos;
+			vertices[(x + z_index) * 6 + 1] = Perlin_get(x_pos, z_pos);
+			vertices[(x + z_index) * 6 + 2] = z_pos;
 		}
 	}
 
