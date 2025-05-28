@@ -74,7 +74,8 @@ int main(void)
 		exit(-1);
 	}
 
-	Chunk* chunk = Chunk_generate();
+	vec2 from = {-10.0f, -10.0f}, to = {10.0f, 10.0f};
+	Chunk* chunk = Chunk_generate(from, to);
 	if (chunk == NULL)
 	{
 		fputs("Failed to create Chunk Object!\n", stderr);
