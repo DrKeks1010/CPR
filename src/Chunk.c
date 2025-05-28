@@ -4,7 +4,7 @@
 #include <memory.h>
 #include "Chunk.h"
 
-Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei triangleCount, vec3 position, vec3 normal)
+Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei triangleCount)
 {
 	Chunk* chunk = calloc(1, sizeof(Chunk));
 	if (chunk == NULL)
@@ -13,13 +13,8 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 		fprintf(stderr, "Couldn't allocate %llu bytes to create Chunk!\n", sizeof(Chunk));
 	}
 
-	chunk->vertices = NULL;
-	chunk->indices = NULL;
 	chunk->triangleCount = triangleCount;
 	
-	memcpy(chunk->position, position, sizeof(vec3));
-	memcpy(chunk->normal, normal, sizeof(vec3));
-
 	if ((chunk->vao = VAO_new()) == NULL)
 	{
 		fputs("Failed to create Vertex Array Object in Chunk!\n", stderr);
@@ -53,9 +48,6 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 }
 inline void Chunk_free(Chunk* chunk)
 {
-	if (chunk->vertices) free(chunk->vertices);
-	if (chunk->indices) free(chunk->indices);
-
 	if (chunk->vao) VAO_free(chunk->vao);
 	if (chunk->vbo) VBO_free(chunk->vbo);
 	if (chunk->ebo) EBO_free(chunk->ebo);
@@ -67,4 +59,35 @@ inline void Chunk_draw(Chunk* chunk)
 {
 	VAO_bind(chunk->vao);
 	glDrawElements(GL_TRIANGLES, chunk->triangleCount, GL_UNSIGNED_INT, 0);
+}
+
+Chunk* Chunk_generate()
+{
+		// Vertices coordinates
+	GLfloat s_vertices[] =
+	{
+		-1.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.0f, -1.0f,
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+	};
+	GLfloat* vertices = malloc(sizeof(s_vertices));
+	memcpy(vertices, s_vertices, sizeof(s_vertices));
+	GLuint s_indices[] =
+	{
+		2, 1, 0,
+		3, 1, 2,
+		5, 1, 3,
+		0, 1, 5,
+		0, 4, 2,
+		2, 4, 3,
+		3, 4, 5,
+		5, 4, 0,
+	};
+	GLuint* indices = malloc(sizeof(s_indices));
+	memcpy(indices, s_indices, sizeof(s_indices));
+
+	return Chunk_new(vertices, sizeof(s_vertices), indices, sizeof(s_indices), 24);
 }

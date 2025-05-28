@@ -35,32 +35,6 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Vertices coordinates
-	GLfloat s_vertices[] =
-	{
-		-1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f,
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-	};
-	GLfloat* vertices = malloc(sizeof(s_vertices));
-	memcpy(vertices, s_vertices, sizeof(s_vertices));
-	GLuint s_indices[] =
-	{
-		2, 1, 0,
-		3, 1, 2,
-		5, 1, 3,
-		0, 1, 5,
-		0, 4, 2,
-		2, 4, 3,
-		3, 4, 5,
-		5, 4, 0,
-	};
-	GLuint* indices = malloc(sizeof(s_indices));
-	memcpy(indices, s_indices, sizeof(s_indices));
-
 	// Create glfw window
 	GLFWwindow* window = glfwCreateWindow(_INITIAL_WINDOW_WIDTH, _INITIAL_WINDOW_HEIGHT, _WINDOW_NAME, NULL, NULL);
 	if (window == NULL)
@@ -100,8 +74,7 @@ int main(void)
 		exit(-1);
 	}
 
-	vec3 position = vec3_empty(), normal = vec3_empty();
-	Chunk* chunk = Chunk_new(vertices, sizeof(s_vertices), indices, sizeof(s_indices), 24, position, normal);
+	Chunk* chunk = Chunk_generate();
 	if (chunk == NULL)
 	{
 		fputs("Failed to create Chunk Object!\n", stderr);
