@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include "Chunk.h"
+#include "Perlin.h"
 
 Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei indicesCount)
 {
@@ -62,9 +63,9 @@ inline void Chunk_draw(Chunk* chunk)
 	glDrawElements(GL_TRIANGLE_STRIP, chunk->indicesCount, GL_UNSIGNED_INT, 0);
 }
 
-#define CHUNK_RESOLUTION 16
+#define CHUNK_RESOLUTION 8
 #define CHUNK_VERTICES_SIZE (sizeof(GLfloat) * (CHUNK_RESOLUTION + 1) * (CHUNK_RESOLUTION + 1) * 3)
-#define CHUNK_INDICES_COUNT ((CHUNK_RESOLUTION + 1) * CHUNK_RESOLUTION * 2)
+#define CHUNK_INDICES_COUNT ((CHUNK_RESOLUTION + 1) * CHUNK_RESOLUTION * 2 + CHUNK_RESOLUTION - 1)
 #define CHUNK_INDICES_SIZE (sizeof(GLuint) * CHUNK_INDICES_COUNT)
 
 Chunk* Chunk_generate(vec2 from, vec2 to)
@@ -99,7 +100,7 @@ Chunk* Chunk_generate(vec2 from, vec2 to)
 			x_pos = from[0] + x * to[0];
 
 			vertices[(x + z_index) * 3 + 0] = x_pos;
-			vertices[(x + z_index) * 3 + 1] = -1;
+			vertices[(x + z_index) * 3 + 1] = Perlin_get(x_pos, z_pos);
 			vertices[(x + z_index) * 3 + 2] = z_pos;
 		}
 	}
@@ -112,6 +113,8 @@ Chunk* Chunk_generate(vec2 from, vec2 to)
 			indices[idx++] = x + z_index;
 			indices[idx++] = x + z_index + (CHUNK_RESOLUTION + 1);
 		}
+		if (z < CHUNK_RESOLUTION)
+			indices[idx++] = (GLuint)-1;
 	}
 
 	return Chunk_new(vertices, CHUNK_VERTICES_SIZE, indices, CHUNK_INDICES_SIZE, CHUNK_INDICES_COUNT);

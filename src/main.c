@@ -58,6 +58,9 @@ int main(void)
 	glEnable(GL_CULL_FACE);
 	// Enable depth testing
 	glEnable(GL_DEPTH_TEST);
+	// Enable primitive restart
+	glPrimitiveRestartIndex((GLuint)-1);
+	glEnable(GL_PRIMITIVE_RESTART);
 
 	// Set resize callback function
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
@@ -74,7 +77,7 @@ int main(void)
 		exit(-1);
 	}
 
-	vec2 from = {-10.0f, -10.0f}, to = {10.0f, 10.0f};
+	vec2 from = {-7.0f, -7.0f}, to = {8.0f, 8.0f};
 	Chunk* chunk = Chunk_generate(from, to);
 	if (chunk == NULL)
 	{
