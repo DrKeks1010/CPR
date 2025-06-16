@@ -15,6 +15,7 @@ typedef struct s_Chunk {
 	mat3x3 inverseMatrix;
 
 	GLuint modelMatrixID;
+	GLuint inverseMatrixID;
 
 	VAO* vao;
 	VBO* vbo;
@@ -25,6 +26,7 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 void Chunk_free(Chunk* chunk);
 
 void Chunk_draw(Chunk* chunk);
+void Chunk_recalculateModelMatrix(Chunk* chunk);
 
 Chunk* Chunk_generate(vec2 from, vec2 to, GLuint shaderId);
 

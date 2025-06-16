@@ -16,6 +16,13 @@ static inline void vec3_setXYZf(vec3 v, GLfloat x, GLfloat y, GLfloat z)
 	v[2] = z;
 }
 
+static inline void vec3_copy(vec3 to, const vec3 from)
+{
+	to[0] = from[0];
+	to[1] = from[1];
+	to[2] = from[2];
+}
+
 
 static inline void vec3_addXf(vec3 v, GLfloat x)
 {

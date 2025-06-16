@@ -18,9 +18,10 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 	chunk->indicesCount = indicesCount;
 	chunk->shaderId = shaderId;
 	memcpy(chunk->modelMatrix, modelMatrix, sizeof(mat4x4));
+	Chunk_recalculateModelMatrix(chunk);
 
 	chunk->modelMatrixID = glGetUniformLocation(shaderId, "model");
-	// Todo: calculate mat3x3(inv(modelMatrix))
+	chunk->inverseMatrixID = glGetUniformLocation(shaderId, "inverse_model");
 	
 	if ((chunk->vao = VAO_new()) == NULL)
 	{
@@ -63,12 +64,34 @@ inline void Chunk_free(Chunk* chunk)
 	free(chunk);
 }
 
-inline void Chunk_draw(Chunk* chunk)
+void Chunk_draw(Chunk* chunk)
 {
 	glUniformMatrix4fv(chunk->modelMatrixID, 1, GL_FALSE, chunk->modelMatrix);
+	glUniformMatrix3fv(chunk->inverseMatrixID, 1, GL_FALSE, chunk->inverseMatrix);
 
 	VAO_bind(chunk->vao);
 	glDrawElements(GL_TRIANGLE_STRIP, chunk->indicesCount, GL_UNSIGNED_INT, 0);
+}
+
+void Chunk_recalculateModelMatrix(Chunk* chunk)
+{
+	chunk->inverseMatrix[0] = chunk->modelMatrix[5] * chunk->modelMatrix[10] - chunk->modelMatrix[6] * chunk->modelMatrix[9];
+	chunk->inverseMatrix[3] = chunk->modelMatrix[6] * chunk->modelMatrix[8] - chunk->modelMatrix[4] * chunk->modelMatrix[10];
+	chunk->inverseMatrix[6] = chunk->modelMatrix[4] * chunk->modelMatrix[9] - chunk->modelMatrix[5] * chunk->modelMatrix[8];
+
+	chunk->inverseMatrix[1] = chunk->modelMatrix[2] * chunk->modelMatrix[9] - chunk->modelMatrix[1] * chunk->modelMatrix[10];
+	chunk->inverseMatrix[4] = chunk->modelMatrix[0] * chunk->modelMatrix[10] - chunk->modelMatrix[2] * chunk->modelMatrix[8];
+	chunk->inverseMatrix[7] = chunk->modelMatrix[1] * chunk->modelMatrix[8] - chunk->modelMatrix[0] * chunk->modelMatrix[9];
+
+	chunk->inverseMatrix[2] = chunk->modelMatrix[1] * chunk->modelMatrix[6] - chunk->modelMatrix[2] * chunk->modelMatrix[5];
+	chunk->inverseMatrix[5] = chunk->modelMatrix[2] * chunk->modelMatrix[4]- chunk->modelMatrix[0] * chunk->modelMatrix[6];
+	chunk->inverseMatrix[8] = chunk->modelMatrix[0] * chunk->modelMatrix[5] - chunk->modelMatrix[1] * chunk->modelMatrix[4];
+
+	GLfloat det = chunk->modelMatrix[0] * chunk->inverseMatrix[0] 
+		+ chunk->modelMatrix[1] * chunk->inverseMatrix[3] 
+		+ chunk->modelMatrix[2] * chunk->inverseMatrix[6];
+	
+	mat3x3_mulf(chunk->inverseMatrix, 1 / det);
 }
 
 #define CHUNK_RESOLUTION 32
