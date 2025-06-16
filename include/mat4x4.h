@@ -14,6 +14,16 @@ typedef GLfloat mat4x4[16];
 	(GLfloat)0.f,(GLfloat)0.f,(GLfloat)1.f,(GLfloat)0.f,\
 	(GLfloat)0.f,(GLfloat)0.f,(GLfloat)0.f,(GLfloat)1.f\
 }
+static inline GLfloat* mat4x4_new()
+{
+	GLfloat* mat = calloc(16, sizeof(GLfloat));
+	mat[0] = 1.0f;
+	mat[5] = 1.0f;
+	mat[10] = 1.0f;
+	mat[15] = 1.0f;
+
+	return mat;
+}
 
 static inline void mat4x4_translateXYZf_right(mat4x4 m, GLfloat x, GLfloat y, GLfloat z)
 {

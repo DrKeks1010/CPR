@@ -2,8 +2,7 @@
 #define _CHUNK_H
 
 #include <glad/glad.h>
-#include "vec2.h"
-#include "vec3.h"
+#include "linmath.h"
 #include "VAO.h"
 #include "VBO.h"
 #include "EBO.h"
@@ -11,16 +10,20 @@
 typedef struct s_Chunk {
 	GLsizei indicesCount;
 
+	GLuint shaderId;
+	mat4x4 modelMatrix;
+	mat3x3 inverseMatrix;
+
 	VAO* vao;
 	VBO* vbo;
 	EBO* ebo;
 } Chunk;
 
-Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei indicesCount);
+Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsizei indicesSize, GLsizei indicesCount, GLuint shaderId, mat4x4 modelMatrix);
 void Chunk_free(Chunk* chunk);
 
 void Chunk_draw(Chunk* chunk);
 
-Chunk* Chunk_generate(vec2 from, vec2 to);
+Chunk* Chunk_generate(vec2 from, vec2 to, GLuint shaderId);
 
 #endif

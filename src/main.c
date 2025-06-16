@@ -78,7 +78,7 @@ int main(void)
 	}
 
 	vec2 from = {-7.0f, -7.0f}, to = {8.0f, 8.0f};
-	Chunk* chunk = Chunk_generate(from, to);
+	Chunk* chunk = Chunk_generate(from, to, defaultShader->ID);
 	if (chunk == NULL)
 	{
 		fputs("Failed to create Chunk Object!\n", stderr);
