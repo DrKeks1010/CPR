@@ -14,6 +14,8 @@ typedef struct s_Chunk {
 	mat4x4 modelMatrix;
 	mat3x3 inverseMatrix;
 
+	GLuint modelMatrixID;
+
 	VAO* vao;
 	VBO* vbo;
 	EBO* ebo;

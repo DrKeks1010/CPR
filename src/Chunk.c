@@ -18,6 +18,8 @@ Chunk* Chunk_new(GLfloat* vertices, GLsizei verticesSize, GLuint* indices, GLsiz
 	chunk->indicesCount = indicesCount;
 	chunk->shaderId = shaderId;
 	memcpy(chunk->modelMatrix, modelMatrix, sizeof(mat4x4));
+
+	chunk->modelMatrixID = glGetUniformLocation(shaderId, "model");
 	// Todo: calculate mat3x3(inv(modelMatrix))
 	
 	if ((chunk->vao = VAO_new()) == NULL)
@@ -63,6 +65,8 @@ inline void Chunk_free(Chunk* chunk)
 
 inline void Chunk_draw(Chunk* chunk)
 {
+	glUniformMatrix4fv(chunk->modelMatrixID, 1, GL_FALSE, chunk->modelMatrix);
+
 	VAO_bind(chunk->vao);
 	glDrawElements(GL_TRIANGLE_STRIP, chunk->indicesCount, GL_UNSIGNED_INT, 0);
 }
@@ -141,5 +145,7 @@ Chunk* Chunk_generate(vec2 from, vec2 to, GLuint shaderId)
 			indices[idx++] = (GLuint)-1;
 	}
 
-	return Chunk_new(vertices, CHUNK_VERTICES_SIZE, indices, CHUNK_INDICES_SIZE, CHUNK_INDICES_COUNT, shaderId, mat4x4_new());
+	mat4x4 modelMatrix = mat4x4_identity();
+
+	return Chunk_new(vertices, CHUNK_VERTICES_SIZE, indices, CHUNK_INDICES_SIZE, CHUNK_INDICES_COUNT, shaderId, modelMatrix);
 }

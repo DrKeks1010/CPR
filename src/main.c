@@ -89,11 +89,9 @@ int main(void)
 	}
 
 	// Create uniform to control rendering of object
-	GLuint modelMatrixID = glGetUniformLocation(defaultShader->ID, "model");
 	GLuint viewMatrixID = glGetUniformLocation(defaultShader->ID, "view");
 	GLuint projectionMatrixID = glGetUniformLocation(defaultShader->ID, "projection");
 
-	mat4x4 modelMatrix = mat4x4_identity();
 	mat4x4_translateXYZf_right(VIEW_MATRIX, 0.f, 0.f, -1.5f);
 	mat4x4_projection(PROJECTION_MATRIX, 90, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 1000);
 
@@ -109,7 +107,6 @@ int main(void)
 
 		Shader_Activate(defaultShader);
 		// Set uniforms
-		glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, modelMatrix);
 		glUniformMatrix4fv(viewMatrixID, 1, GL_FALSE, VIEW_MATRIX);
 		glUniformMatrix4fv(projectionMatrixID, 1, GL_FALSE, PROJECTION_MATRIX);
 
