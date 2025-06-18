@@ -94,7 +94,7 @@ void Chunk_recalculateModelMatrix(Chunk* chunk)
 	mat3x3_mulf(chunk->inverseMatrix, 1 / det);
 }
 
-#define CHUNK_RESOLUTION 32
+#define CHUNK_RESOLUTION 2048
 #define CHUNK_VERTICES_SIZE (sizeof(GLfloat) * (CHUNK_RESOLUTION + 1) * (CHUNK_RESOLUTION + 1) * 6)
 #define CHUNK_INDICES_COUNT ((CHUNK_RESOLUTION + 1) * CHUNK_RESOLUTION * 2 + CHUNK_RESOLUTION - 1)
 #define CHUNK_INDICES_SIZE (sizeof(GLuint) * CHUNK_INDICES_COUNT)

@@ -77,7 +77,7 @@ int main(void)
 		exit(-1);
 	}
 
-	vec2 from = {-7.0f, -7.0f}, to = {8.0f, 8.0f};
+	vec2 from = {-31.0f, -31.0f}, to = {32.0f, 32.0f};
 	Chunk* chunk = Chunk_generate(from, to, defaultShader->ID);
 	if (chunk == NULL)
 	{
